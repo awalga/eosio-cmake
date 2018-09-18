@@ -19,9 +19,9 @@ CMake scripts for eosio smart contract developments.
 
 ## Overview
 
-This project provides cmake scripts and attempts to mimic CMake build patterns while targeting eosio wasm compiler. Altough a cross compiler would be the ultimate solution, here we provide a simple approache based on cmake scripts.
+This project provides cmake scripts and attempts to mimic CMake build patterns while targeting eosio wasm compiler. Altough a cross compiler would be the ultimate solution, here we provide a simpler version based on cmake scripts.
 
-Compared to other scripting solution, this project allows you to work within an IDE compatible with cmake (eg Clion)
+This project was inspired on work from [InfiniteXLabs](https://github.com/infiniteXLabs/default-template), this project allows you to work within an IDE compatible with cmake (eg Clion). It allows you to have multiple contract within the same contracts, link agaist headers and libraries installed on your system (you dont need to copy header file to your project).
 
 ## Prerequisites
 
