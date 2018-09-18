@@ -10,11 +10,18 @@ CMake scripts for eosio smart contract developments.
   - [CMake function extension](#cmake-function-extension)
   - [CMake configuration extension](#cmake-configuration-extension)
   - [CMake EOSIO sdk imports](#cmake-eosio-sdk-imports)
+- [Usage](#usage)
+  - [Using scripts from your project](#using-scripts-from-your-project)
+  - [Build from cmake](#build-from-cmake)
+  - [CLion introspection hack](#clion-introspection-hack)
+- [Example](#example)
 - [License](#license)
 
 ## Overview
 
 This project provides cmake scripts and attempts to mimic CMake build patterns while targeting eosio wasm compiler. Altough a cross compiler would be the ultimate solution, here we provide a simple approache based on cmake scripts.
+
+Compared to other scripting solution, this project allows you to work within an IDE compatible with cmake (eg Clion)
 
 ## Prerequisites
 
@@ -74,7 +81,7 @@ Each target defines the following depency tree:
 
 ## Usage
 
-### Add cmake scripts to your project
+### Using scripts from your project
 Copy `eosiosdk.cmake`, `eosiosdk-util.cmake`, `FindEOSIOSDKLibs` and add them in your root CMakeLists.
 
 ```
@@ -82,7 +89,7 @@ include(cmake/eosiosdk.cmake)
 include(cmake/eosiosdk-util.cmake)
 include(cmake/FindEOSIOSDKLibs.cmake)
 ```
-### Using cmake
+### Build from cmake
 
 Your projects build like a normal cmake project
 - building
@@ -100,7 +107,7 @@ This scripts should create an abi, code and lib directories each containing abi,
 make ${target_contract}_install 
 ```
 
-### CLion hack for introspection
+### CLion introspection hack
 
 To enable clion code introspection use the following hack.
 
