@@ -62,16 +62,14 @@ Available options are:
 - Build targets and dependencies
 `eosiosdk` defines a build root target named `contracts`. Project target are added as dependencies to `contracts` target.
 Each target defines the following depency tree:
-> Build targets dependency tree
- ${target}
+ ```${target}
     ├── ${target}_abi_gen                                  # output abi
     ├── ${target}_link                                  
     |      ├── generate_${target}.bc                       # output build and link llvm byte code
     |           ├── generate_${target}.s                   # output llc assembly text
     |                ├── generate_${target}.wast           # output WAST file
     |                ├── generate_${target}.wasm           # output target WASM file
-    └── ${target}_install
-> Build targets dependency tree
+    └── ${target}_install```
 ## Usage
 
 ### Add cmake scripts to your project
