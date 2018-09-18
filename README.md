@@ -62,16 +62,15 @@ Available options are:
 - Build targets and dependencies
 `eosiosdk` defines a build root target named `contracts`. Project target are added as dependencies to `contracts` target.
 Each target defines the following depency tree:
-${target}
-  ------> ${target}_abi_gen // output abi
-  ------> ${target}_link
-              -----> generate_${target}.bc // output build and link llvm byte code
-                  -----> generate_${target}.s // output llc assembly text
-                      -----> generate_${target}.wast // output WAST file
-                      ----->  generate_${target}.wasm // output target WASM file
-- Install
-`eosiosdk` defines install target for each target
-${target}_install
+
+ ${target}
+    ├── ${target}_abi_gen                                  # output abi
+    ├── ${target}_link                                  
+    |      ├── generate_${target}.bc                       # output build and link llvm byte code
+    |           ├── generate_${target}.s                   # output llc assembly text
+    |                ├── generate_${target}.wast           # output WAST file
+    |                ├── generate_${target}.wasm           # output target WASM file
+    └── ${target}_install
 
 ## Usage
 
