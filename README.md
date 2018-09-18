@@ -26,9 +26,14 @@ We provide three scripts `eosiosdk.cmake` `eosiosdk-util.cmake` `FindEOSIOSDKLib
 
 ### CMake function extension
 
-`eosiosdk.cmake` define cmake function similar to `add_library` `target_include_directories` `target_link_libraries` 
-and a new function specific to eosio `add_eosio_wasm_abi`
+`eosiosdk.cmake` define cmake function similar to `add_library` `target_compile_definitions` `target_include_directories` `target_link_libraries` 
+and a new function specific to eosio `add_eosio_wasm_abi`.
 
+ - add_eosio_wasm_library: defined as `function(add_eosio_wasm_library target)`
+ - target_eosio_wasm_compile_definitions: defined as `function(target_eosio_wasm_compile_definitions target)`
+ - target_eosio_wasm_include_directories: defined as `function(target_eosio_wasm_include_directories target)`
+ - target_eosio_wasm_link_libraries: defined as `function(target_eosio_wasm_link_libraries target)`
+ 
 ### CMake configuration extension
 `eosiosdk-util.cmake` define CMake configuration flags and WASM compiler flags.
 
@@ -53,10 +58,9 @@ Available options are:
 ### CMake EOSIO sdk imports
 `FindEOSIOSDKLibs.cmake` defines and imports eosio headers and wasm libraries as targets.
 
-
 ## Usage
 
-Copy `eosiosdk.cmake`, `eosiosdk-util.cmake`, `FindEOSIOSDKLibs` and add tehm in your root CMakeLists.
+Copy `eosiosdk.cmake`, `eosiosdk-util.cmake`, `FindEOSIOSDKLibs` and add them in your root CMakeLists.
 
 ```
 include(cmake/eosiosdk.cmake)
@@ -64,8 +68,7 @@ include(cmake/eosiosdk-util.cmake)
 include(cmake/FindEOSIOSDKLibs.cmake)
 ```
 
-
-## Clion hack for introspection
+## CLion hack for introspection
 
 To enable clion code introspection use the following hack.
 
