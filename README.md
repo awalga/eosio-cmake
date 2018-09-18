@@ -62,7 +62,7 @@ Available options are:
 - Build targets and dependencies
 `eosiosdk` defines a build root target named `contracts`. Project target are added as dependencies to `contracts` target.
 Each target defines the following depency tree:
-
+> Build targets dependency tree
  ${target}
     ├── ${target}_abi_gen                                  # output abi
     ├── ${target}_link                                  
@@ -71,7 +71,7 @@ Each target defines the following depency tree:
     |                ├── generate_${target}.wast           # output WAST file
     |                ├── generate_${target}.wasm           # output target WASM file
     └── ${target}_install
-
+> Build targets dependency tree
 ## Usage
 
 ### Add cmake scripts to your project
