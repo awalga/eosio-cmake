@@ -69,7 +69,9 @@ Each target defines the following depency tree:
     |           ├── generate_${target}.s                   # output llc assembly text
     |                ├── generate_${target}.wast           # output WAST file
     |                ├── generate_${target}.wasm           # output target WASM file
-    └── ${target}_install```
+    └── ${target}_install 
+```
+
 ## Usage
 
 ### Add cmake scripts to your project
