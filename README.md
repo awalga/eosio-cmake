@@ -58,8 +58,24 @@ Available options are:
 ### CMake EOSIO sdk imports
 `FindEOSIOSDKLibs.cmake` defines and imports eosio headers and wasm libraries as targets.
 
+### Targets and dependencies
+- Build targets and dependencies
+`eosiosdk` defines a build root target named `contracts`. Project target are added as dependencies to `contracts` target.
+Each target defines the following depency tree:
+${target}
+  ------> ${target}_abi_gen // output abi
+  ------> ${target}_link
+              -----> generate_${target}.bc // output build and link llvm byte code
+                  -----> generate_${target}.s // output llc assembly text
+                      -----> generate_${target}.wast // output WAST file
+                      ----->  generate_${target}.wasm // output target WASM file
+- Install
+`eosiosdk` defines install target for each target
+${target}_install
+
 ## Usage
 
+### Add cmake scripts to your project
 Copy `eosiosdk.cmake`, `eosiosdk-util.cmake`, `FindEOSIOSDKLibs` and add them in your root CMakeLists.
 
 ```
@@ -67,8 +83,25 @@ include(cmake/eosiosdk.cmake)
 include(cmake/eosiosdk-util.cmake)
 include(cmake/FindEOSIOSDKLibs.cmake)
 ```
+### Using cmake
 
-## CLion hack for introspection
+Your projects build like a normal cmake project
+- building
+```
+cd your-project
+mkdir build && cd build
+cmake ..
+make contracts
+```
+
+This scripts should create an abi, code and lib directories each containing abi, wast/wasm code and byte code libraries for each targets defined in your project.
+
+- installing
+```
+make ${target_contract}_install 
+```
+
+### CLion hack for introspection
 
 To enable clion code introspection use the following hack.
 
