@@ -427,79 +427,74 @@ function(eosio_wasm_install target)
         # CACHE ALREADY POPULATED
     endif ()
 
-    set(options CONTRACT)
+    set(options CONTRACT LIBRARY)
     set(oneValueArgs "")
-    set(multiValueArgs RUNTIME LIBRARY INTERFACE CONTRACT_CODE)
+    set(multiValueArgs INTERFACE RUNTIME CODE ABI)
     cmake_parse_arguments(${target}_INSTALL "${options}" "${oneValueArgs}"
             "${multiValueArgs}" ${ARGN})
 
     add_custom_target(${target}_install)
     add_dependencies(${target}_install ${target})
-    # INSTALL CONTRACT TARGET else LIBRARY
+
+    # INSTALL CONTRACT TARGET
     if (${${target}_INSTALL_CONTRACT})
-        if (NOT ("${${target}_INSTALL_CONTRACT_CODE}" STREQUAL ""))
-            cmake_parse_arguments(${target}_INSTALL_CONTRACT "" "DESTINATION"
-                    "" ${${target}_INSTALL_CONTRACT_CODE})
+        if (NOT ("${${target}_INSTALL_ABI}" STREQUAL ""))
+            cmake_parse_arguments(${target}_INSTALL_ABI "" "DESTINATION"
+                    "" ${${target}_INSTALL_ABI})
             # COPY abi
             add_custom_command(TARGET ${target}_install
                     POST_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E echo "${ABI_OUTPUT_PATH}:${CMAKE_INSTALL_PREFIX}/${${target}_INSTALL_CONTRACT_DESTINATION}"
-                    COMMAND ${CMAKE_COMMAND} -E copy ${target}.abi "${CMAKE_INSTALL_PREFIX}/${${target}_INSTALL_CONTRACT_DESTINATION}/${target}.abi"
+                    COMMAND ${CMAKE_COMMAND} -E echo "${ABI_OUTPUT_PATH}:${${target}_INSTALL_ABI_DESTINATION}"
+                    COMMAND ${CMAKE_COMMAND} -E copy ${target}.abi "${${target}_INSTALL_ABI_DESTINATION}/${target}.abi"
                     WORKING_DIRECTORY "${ABI_OUTPUT_PATH}"
                     COMMENT "Installing contracts abi"
                     )
-            # COPY abi, wast, wasm
+        endif ()
+        if (NOT ("${${target}_INSTALL_CODE}" STREQUAL ""))
+            cmake_parse_arguments(${target}_INSTALL_CODE "" "DESTINATION"
+                    "" ${${target}_INSTALL_CODE})
+            # COPY wasm
             add_custom_command(TARGET ${target}_install
                     POST_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E echo "${EXECUTABLE_OUTPUT_PATH}:${CMAKE_INSTALL_PREFIX}/${${target}_INSTALL_CONTRACT_DESTINATION}"
-                    COMMAND ${CMAKE_COMMAND} -E copy ${target}.wasm "${CMAKE_INSTALL_PREFIX}/${${target}_INSTALL_CONTRACT_DESTINATION}/${target}.wasm"
+                    COMMAND ${CMAKE_COMMAND} -E echo "${EXECUTABLE_OUTPUT_PATH}:${${target}_INSTALL_CODE_DESTINATION}"
+                    COMMAND ${CMAKE_COMMAND} -E copy ${target}.wasm "${${target}_INSTALL_CODE_DESTINATION}/${target}.wasm"
                     WORKING_DIRECTORY "${EXECUTABLE_OUTPUT_PATH}"
                     COMMENT "Installing contracts wasm"
                     )
             # COPY wast
             add_custom_command(TARGET ${target}_install
                     POST_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E echo "${CODE_OUTPUT_PATH}:${CMAKE_INSTALL_PREFIX}/${${target}_INSTALL_CONTRACT_DESTINATION}"
-                    COMMAND ${CMAKE_COMMAND} -E copy ${target}.wast "${CMAKE_INSTALL_PREFIX}/${${target}_INSTALL_CONTRACT_DESTINATION}/${target}.wast"
+                    COMMAND ${CMAKE_COMMAND} -E echo "${CODE_OUTPUT_PATH}:${${target}_INSTALL_CODE_DESTINATION}"
+                    COMMAND ${CMAKE_COMMAND} -E copy ${target}.wast "${${target}_INSTALL_CODE_DESTINATION}/${target}.wast"
                     WORKING_DIRECTORY "${CODE_OUTPUT_PATH}"
                     COMMENT "Installing contracts wast"
                     )
         endif ()
-    else ()
-        # INSTALL RUNTIME WASM
-        if (NOT ("${${target}_INSTALL_RUNTIME}" STREQUAL ""))
-            cmake_parse_arguments(${target}_INSTALL_RUNTIME "" "DESTINATION"
-                    "" ${${target}_INSTALL_RUNTIME})
+    endif ()
+    # INSTALL LIBRARY TARGET
+    if (${${target}_INSTALL_LIBRARY})
+        if (NOT ("${${target}_INSTALL_LIBRARY_CODE}" STREQUAL ""))
+            cmake_parse_arguments(${target}_INSTALL_LIBRARY_CODE "" "DESTINATION"
+                    "" ${${target}_INSTALL_LIBRARY_CODE})
+            # COPY bc files
             add_custom_command(TARGET ${target}_install
                     POST_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E echo "${EXECUTABLE_OUTPUT_PATH}:${CMAKE_INSTALL_PREFIX}/${${target}_INSTALL_RUNTIME_DESTINATION}"
-                    COMMAND ${CMAKE_COMMAND} -E copy ${target}.wasm "${CMAKE_INSTALL_PREFIX}/${${target}_INSTALL_RUNTIME_DESTINATION}"
+                    COMMAND ${CMAKE_COMMAND} -E echo "${LIBRARY_OUTPUT_PATH}:${${target}_INSTALL_LIBRARY_CODE_DESTINATION}"
+                    COMMAND ${CMAKE_COMMAND} -E copy ${target}.bc "${${target}_INSTALL_LIBRARY_CODE_DESTINATION}/${target}.bc"
+                    WORKING_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
+                    COMMENT "Installing contracts bytecode library"
+                    )
+        endif ()
+        if (NOT ("${${target}_INSTALL_LIBRARY_RUNTIME}" STREQUAL ""))
+            cmake_parse_arguments(${target}_INSTALL_LIBRARY_RUNTIME "" "DESTINATION"
+                    "" ${${target}_INSTALL_LIBRARY_RUNTIME})
+            # COPY wasm files
+            add_custom_command(TARGET ${target}_install
+                    POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E echo "${EXECUTABLE_OUTPUT_PATH}:${${target}_INSTALL_LIBRARY_RUNTIME_DESTINATION}"
+                    COMMAND ${CMAKE_COMMAND} -E copy ${target}.wasm "${${target}_INSTALL_LIBRARY_RUNTIME_DESTINATION}/${target}.wasm"
                     WORKING_DIRECTORY "${EXECUTABLE_OUTPUT_PATH}"
                     COMMENT "Installing runtime wasm"
-                    )
-        endif ()
-        # INSTALL RUNTIME WAST
-        if (NOT ("${${target}_INSTALL_RUNTIME}" STREQUAL ""))
-            cmake_parse_arguments(${target}_INSTALL_RUNTIME "" "DESTINATION"
-                    "" ${${target}_INSTALL_RUNTIME})
-            add_custom_command(TARGET ${target}_install
-                    POST_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E echo "${CODE_OUTPUT_PATH}:${CMAKE_INSTALL_PREFIX}/${${target}_INSTALL_RUNTIME_DESTINATION}"
-                    COMMAND ${CMAKE_COMMAND} -E copy ${target}.wast "${CMAKE_INSTALL_PREFIX}/${${target}_INSTALL_RUNTIME_DESTINATION}"
-                    WORKING_DIRECTORY "${CODE_OUTPUT_PATH}"
-                    COMMENT "Installing runtime wast"
-                    )
-        endif ()
-        # INSTALL LIB
-        if (NOT ("${${target}_INSTALL_LIB}" STREQUAL ""))
-            cmake_parse_arguments(${target}_INSTALL_LIB "" "DESTINATION"
-                    "" ${${target}_INSTALL_LIB})
-            add_custom_command(TARGET ${target}_install
-                    POST_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E echo "${LIBRARY_OUTPUT_PATH}:${CMAKE_INSTALL_PREFIX}/${${target}_INSTALL_LIB_DESTINATION}"
-                    COMMAND ${CMAKE_COMMAND} -E copy ${target}.bc "${CMAKE_INSTALL_PREFIX}/${${target}_INSTALL_LIB_DESTINATION}"
-                    WORKING_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
-                    COMMENT "Installing library bc"
                     )
         endif ()
     endif ()
