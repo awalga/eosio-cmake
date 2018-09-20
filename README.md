@@ -130,7 +130,7 @@ target_include_directories(eosio_hello_world.tmp
 ```
 ## Example 
 
-An example Clion project with 3 eos smart contract [eosio-cmake-examples](https://github.com/awalga/eosio-cmake-examples/)
+An example Clion project with 3 eos smart contract [eosio-cmake-tutorial](https://github.com/awalga/eosio-cmake-tutorial/)
 
 ## License
 
