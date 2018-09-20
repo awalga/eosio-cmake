@@ -54,4 +54,3 @@ endif ()
 if ("${CMAKE_WASM_A_FLAGS}" STREQUAL "")
     set(CMAKE_WASM_A_FLAGS -n)
 endif ()
-
